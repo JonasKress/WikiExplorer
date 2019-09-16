@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Wiki Explorer</string>
+    <string name="SPARQLEndpoint"><![CDATA[
+        https://query.wikidata.org/sparql?format=json&query=
+    ]]></string>
+    <string name="query">
+SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {
+  SERVICE wikibase:around {
+    ?item wdt:P625 ?location.
+    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".
+    bd:serviceParam wikibase:radius \"1\".
+    bd:serviceParam wikibase:distance ?distance.
+  }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en,es,de\". }
+ ?item wdt:P18 ?image.
+}
+</string>
+</resources>
