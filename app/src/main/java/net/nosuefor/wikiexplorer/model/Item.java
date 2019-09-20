@@ -1,4 +1,4 @@
-package net.nosuefor.wikiexplorer.query;
+package net.nosuefor.wikiexplorer.model;
 
 public class Item {
 

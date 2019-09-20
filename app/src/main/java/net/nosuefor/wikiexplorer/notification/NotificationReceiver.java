@@ -8,34 +8,33 @@ import android.util.Log;
 
 public class NotificationReceiver extends BroadcastReceiver {
 
-    public static final String ACTION_IGNORE = "IGNORE";
+    public static final String ACTION_OPEN_MAP = "MAP";
     public static final String ACTION_OPEN_WIKIPEDIA = "WIKIPEDIA";
     public static final String ACTION_OPEN_WIKIDATA = "WIKIDATA";
 
+    public static final String EXTRA_DATA = "EXTRA_DATA";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("NotificationReceiver", "receive" + intent.getAction());
-
-        String id = intent.getStringExtra("id");
+        String data = intent.getStringExtra(EXTRA_DATA);
         String uri = null;
 
         switch (intent.getAction()) {
             case ACTION_OPEN_WIKIPEDIA:
-                uri = "https://www.wikidata.org/wiki/Special:GoToLinkedPage?site=en&itemid=" + id;
-                Log.d("Wikipedia", uri);
-                Intent wikipediaIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                wikipediaIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(wikipediaIntent);
+                uri = "https://www.wikidata.org/wiki/Special:GoToLinkedPage?site=en&itemid=" + data;
                 break;
             case ACTION_OPEN_WIKIDATA:
-                uri = "https://www.wikidata.org/entity/" + id;
-                Log.d("Wikidata", uri);
-                Intent wikidataIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                wikidataIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(wikidataIntent);
+                uri = "https://www.wikidata.org/entity/" + data;
                 break;
-
+            case ACTION_OPEN_MAP:
+                String[] points = data.replace("Point(", "").replace(")", "").split(" ");
+                uri = "geo:" + points[1] + "," + points[0] + "?q=" + points[1] + "," + points[0];
+                break;
         }
+        Log.d("reciever", uri);
 
+        Intent openIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        openIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(openIntent);
     }
 }

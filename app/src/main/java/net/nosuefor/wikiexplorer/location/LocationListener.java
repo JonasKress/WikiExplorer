@@ -11,13 +11,18 @@ import com.google.android.gms.location.LocationServices;
 
 public class LocationListener {
 
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+
     public LocationListener(Context context, LocationCallback locationCallback) {
 
         startLocationUpdates(context, locationCallback);
     }
 
     private void startLocationUpdates(Context context, LocationCallback locationCallback) {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+        this.locationCallback = locationCallback;
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(30000);
@@ -26,5 +31,9 @@ public class LocationListener {
                 Looper.getMainLooper());
 
         Log.d("main", "Start location listener");
+    }
+
+    public void stop() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 }

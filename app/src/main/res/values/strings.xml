@@ -3,6 +3,8 @@
     <string name="SPARQLEndpoint"><![CDATA[
         https://query.wikidata.org/sparql?format=json&query=
     ]]></string>
+    <string name="SPARQLEmbed"> https://query.wikidata.org/embed.html?{rand}##defaultView:Map%0A
+    </string>
     <string name="query">
 SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {
   SERVICE wikibase:around {
@@ -15,4 +17,13 @@ SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {
  ?item wdt:P18 ?image.
 }
 </string>
+    <string name="query_country_codes">
+        SELECT ?country ?countryLabel ?code WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". }
+  ?country wdt:P297 ?code.
+}
+ORDER BY  ?countryLabel
+    </string>
+    <string name="ui_label_distance">Distance</string>
+
 </resources>

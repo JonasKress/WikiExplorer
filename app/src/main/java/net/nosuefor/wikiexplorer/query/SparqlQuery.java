@@ -1,27 +1,22 @@
 package net.nosuefor.wikiexplorer.query;
 
 import android.location.Location;
-import android.util.Log;
+
+import net.nosuefor.wikiexplorer.model.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class Query {
+public class SparqlQuery {
 
+    Api api = null;
 
-    String endpoint = null;
+    public SparqlQuery(String endpoint) {
 
-    public Query(String endpoint) {
-        this.endpoint = endpoint;
+        this.api = new Api(endpoint);
     }
 
     public ArrayList<Item> execute(String query, Location location) {
@@ -30,34 +25,9 @@ public class Query {
                 "\"Point(" + location.getLongitude()
                         + " " + location.getLatitude() + ")\"^^geo:wktLiteral");
 
-
-        query = endpoint + URLEncoder.encode(query);
-
-        Log.d("query", query);
-        return fetchQuery(query);
+        return createItems(api.getResult(query));
     }
 
-    private ArrayList<Item> fetchQuery(String queryUrl) {
-        ArrayList<Item> items = new ArrayList();
-
-        try {
-            URL url = new URL(queryUrl);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            java.util.Scanner s = new java.util.Scanner(in).useDelimiter("\\A");
-            String response = s.next();
-            Log.d("main", response);
-            urlConnection.disconnect();
-
-            return createItems(response);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return items;
-    }
 
     private ArrayList<Item> createItems(String jsonString) {
         ArrayList<Item> items = new ArrayList();
@@ -76,7 +46,7 @@ public class Query {
                 item.label = jsonRow.getJSONObject("itemLabel").getString("value");
                 item.description = jsonRow.getJSONObject("itemDescription").getString("value");
                 item.location = jsonRow.getJSONObject("location").getString("value");
-                item.distance = jsonRow.getJSONObject("distance").getLong("value");
+                item.distance = jsonRow.getJSONObject("distance").getLong("value") * 1000;
 
                 items.add(item);
             }

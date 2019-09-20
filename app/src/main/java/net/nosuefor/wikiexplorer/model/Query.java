@@ -1,6 +1,6 @@
-package net.nosuefor.wikiexplorer.query;
+package net.nosuefor.wikiexplorer.model;
 
-public class QueryItem {
+public class Query {
     public String name = null;
     public String query = null;
 }
