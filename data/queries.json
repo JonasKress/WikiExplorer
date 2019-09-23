@@ -1,15 +1,62 @@
 [
   {
     "name": "All Items",
-    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en,es,de\". }\n ?item wdt:P18 ?image.\n}"
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n}"
   },
   {
     "name": "Buildings",
-    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31 wd:Q811979. \n}"
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31 wd:Q811979. \n}"
+  },
+  {
+    "name": "Parks",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31/wdt:P279* wd:Q22698. \n}"
+  },
+  {
+    "name": "Public transport Station",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31/wdt:P279* wd:Q12819564. \n}"
+  },
+  {
+    "name": "Metro Station",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31 wd:Q928830. \n}"
+  },
+  {
+    "name": "Theaters",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31/wdt:P279* wd:Q24354.\n}"
+  },
+  {
+    "name": "Museum",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31 wd:Q33506. \n}"
   },
   {
     "name": "Art Museum",
-    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31 wd:Q207694. \n}"
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31 wd:Q207694. \n}"
+  },
+  {
+    "name": "Monuments",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31/wdt:P279* wd:Q4989906. \n}"
+  },
+  {
+    "name": "Sculptures",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P31/wdt:P279* wd:Q860861. \n}"
+  },
+  {
+    "name": "Discothèques",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P2848 wd:Q1228895. \n}"
+  },
+  {
+    "name": "Free Wifi",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P2848 wd:Q1543615. \n}"
+  },
+  {
+    "name": "Items with missing English label",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n  FILTER(NOT EXISTS {\n   ?item rdfs:label ?lang_label.\n   FILTER(LANG(?lang_label) = \"en\")\n }) \n}"
+  },
+  {
+    "name": "Items with missing English description",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n    FILTER(NOT EXISTS {\n    ?item schema:description ?itemdesc.\n    FILTER(LANG(?itemdesc) = \"en\") \n  })\n}"
+  },
+  {
+    "name": "Items with missing image",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n FILTER(NOT EXISTS {\n  ?item wdt:P18 ?image\n  })  \n}"
   }
-  
 ]
