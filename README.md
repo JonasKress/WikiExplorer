@@ -5,11 +5,12 @@ Find objects around you powered by Wikidata SPARQL queries
 ## Todo
 ### Features
 - Save settings
-- Show notification once
-- Show distance in notification
+- Show notification only once
 - Update map preview on location change
 - UI i18n
-- Wikipedia Summary
+- Wikipedia summary
+- micro edits
+
 
 ### Code
 - Handle offline/exceptions

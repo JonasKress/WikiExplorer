@@ -22,6 +22,7 @@ import java.net.URL;
 public class Notification {
 
     private static final String CHANNEL_ID = "C1";
+    private static final String IMAGE_PLACEHOLDER_URL = "https://upload.wikimedia.org/wikipedia/commons/4/49/Medium_placeholder.png";
     private Context context = null;
 
 
@@ -38,7 +39,7 @@ public class Notification {
         return PendingIntent.getBroadcast(context, id, intent, 0);
     }
 
-    public void showNotification(String entityURI, String title, String text, String imageUrl, String location, long distance) {
+    public void showNotification(String entityURI, String title, String text, String imageUrl, String location, double distance) {
         int id = Integer.parseInt(entityURI.substring(entityURI.indexOf("/Q") + 2));
 
         PendingIntent wikipediaPendingIntent = createIntent(NotificationReceiver.ACTION_OPEN_WIKIPEDIA, id, "Q" + id);
@@ -46,13 +47,16 @@ public class Notification {
         PendingIntent mapPendingIntent = createIntent(NotificationReceiver.ACTION_OPEN_MAP, id, location);
 
         try {
+            if (imageUrl == null) {
+                imageUrl = IMAGE_PLACEHOLDER_URL;
+            }
+
             URL url = new URL(imageUrl);
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setContentTitle(title + " " + Format.distance(distance))
+                    .setContentTitle(title + " (" + Format.distance(distance) + ")")
                     .setContentText(text)
                     .setLargeIcon(bmp)
                     .addAction(R.drawable.ic_launcher_background, "Wikipedia",
@@ -74,6 +78,12 @@ public class Notification {
             e.printStackTrace();
         }
 
+    }
+
+    private NotificationCompat.Builder createBuilder() {
+        NotificationCompat.Builder builder = null;
+
+        return builder;
     }
 
     private void createNotificationChannel() {

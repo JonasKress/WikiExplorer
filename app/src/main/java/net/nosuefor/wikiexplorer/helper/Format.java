@@ -2,7 +2,7 @@ package net.nosuefor.wikiexplorer.helper;
 
 public class Format {
 
-    public static String distance(long distance) {
+    public static String distance(double distance) {
         String distanceLabel;
 
         if (distance < 1000) {

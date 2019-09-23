@@ -46,7 +46,7 @@ public class SparqlQuery {
                 item.label = jsonRow.getJSONObject("itemLabel").getString("value");
                 item.description = jsonRow.getJSONObject("itemDescription").getString("value");
                 item.location = jsonRow.getJSONObject("location").getString("value");
-                item.distance = jsonRow.getJSONObject("distance").getLong("value") * 1000;
+                item.distance = jsonRow.getJSONObject("distance").getDouble("value") * 1000;
 
                 items.add(item);
             }

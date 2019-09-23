@@ -15,6 +15,7 @@ public class QueryList {
     public ArrayList<Query> get() {
 
         return parseJson((new Api(JSON_URL).getResult()));
+
     }
 
     private ArrayList<Query> parseJson(String jsonString) {

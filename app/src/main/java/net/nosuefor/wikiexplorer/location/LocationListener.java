@@ -2,7 +2,6 @@ package net.nosuefor.wikiexplorer.location;
 
 import android.content.Context;
 import android.os.Looper;
-import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -25,12 +24,10 @@ public class LocationListener {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(30000);
+        locationRequest.setInterval(3 * 60 * 1000);
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 Looper.getMainLooper());
-
-        Log.d("main", "Start location listener");
     }
 
     public void stop() {

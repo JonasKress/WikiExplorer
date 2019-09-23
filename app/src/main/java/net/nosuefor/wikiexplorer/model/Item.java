@@ -6,7 +6,7 @@ public class Item {
     public String label;
     public String description = null;
     public String imageUrl = null;
-    public long distance = 0;
+    public double distance = 0;
     public String location = null;
 
 }

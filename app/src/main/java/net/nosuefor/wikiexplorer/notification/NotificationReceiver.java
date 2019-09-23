@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import java.util.Locale;
+
 public class NotificationReceiver extends BroadcastReceiver {
 
     public static final String ACTION_OPEN_MAP = "MAP";
@@ -21,7 +23,8 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         switch (intent.getAction()) {
             case ACTION_OPEN_WIKIPEDIA:
-                uri = "https://www.wikidata.org/wiki/Special:GoToLinkedPage?site=en&itemid=" + data;
+                String lang = Locale.getDefault().getLanguage();
+                uri = "https://www.wikidata.org/wiki/Special:GoToLinkedPage?site=" + lang + "&itemid=" + data;
                 break;
             case ACTION_OPEN_WIKIDATA:
                 uri = "https://www.wikidata.org/entity/" + data;

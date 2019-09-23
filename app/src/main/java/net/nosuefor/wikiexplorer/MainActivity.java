@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
@@ -17,10 +19,11 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import net.nosuefor.wikiexplorer.helper.Format;
 import net.nosuefor.wikiexplorer.model.Query;
@@ -69,10 +72,25 @@ public class MainActivity extends AppCompatActivity {
 
     void handlePermissions() {
         String[] perms = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            Toast.makeText(this, "Permissions granted", Toast.LENGTH_LONG).show();
-        } else {
+        if (!EasyPermissions.hasPermissions(this, perms)) {
             EasyPermissions.requestPermissions(this, "", 42, perms);
+        }
+
+        try {
+            int off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+            if (off == 0) {
+                Snackbar.make(findViewById(android.R.id.content), "GPS is disabled",
+                        Snackbar.LENGTH_LONG)
+                        .setAction("Enable", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(onGPS);
+                            }
+                        }).show();
+            }
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -100,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateDistanceLabel() {
         TextView label = findViewById(R.id.distanceTextView);
-        label.setText(getText(R.string.ui_label_distance) + " " + Format.distance((long) distance));
+        label.setText(getText(R.string.ui_label_distance) + " " + Format.distance(distance));
     }
 
     private String getQuery() {
@@ -114,8 +132,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         query = query.replaceAll("\"\\[AUTO\\_LANGUAGE\\]\"", Locale.getDefault().getLanguage())
-                .replaceAll("\"\\[RADIUS\\]\"", (distance / 1000) + "");
+                .replaceAll("\"\\[RADIUS\\]\"", (distance / 1000.0) + "");
 
+        Log.d(Thread.currentThread().getStackTrace().toString(), query);
         return query;
     }
 
