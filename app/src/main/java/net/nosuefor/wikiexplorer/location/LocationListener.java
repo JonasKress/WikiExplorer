@@ -24,7 +24,7 @@ public class LocationListener {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(3 * 60 * 1000);
+        locationRequest.setInterval(60 * 1000);
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 Looper.getMainLooper());

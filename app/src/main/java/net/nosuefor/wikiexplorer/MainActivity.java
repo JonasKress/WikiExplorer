@@ -2,6 +2,7 @@ package net.nosuefor.wikiexplorer;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,11 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity {
 
+    final static String PREFERENCES_NAME = "WIKI_EXPLORER";
+    final static String PREFERENCES_FIELD_SELECTED_QUERY_INDEX = "PREFERENCES_SELECTED_QUERY_INDEX";
+    final static String PREFERENCES_FIELD_DISTANCE = "PREFERENCES_FIELD_DISTANCE";
+
+
     ArrayList<Query> queries = null;
     private int selectedQueryIndex = 0;
     private double distance = 100;
@@ -51,10 +57,35 @@ public class MainActivity extends AppCompatActivity {
         handlePermissions();
         loadQueries();
 
+        readSettings();
         initQuerySelector();
         initDistance();
         initEnableNotificationsSwitch();
         initPreview();
+    }
+
+    void readSettings() {
+        try {
+            SharedPreferences settings = getSharedPreferences(PREFERENCES_NAME, 0);
+            selectedQueryIndex = settings.getInt(PREFERENCES_FIELD_SELECTED_QUERY_INDEX, 0);
+            distance = settings.getFloat(PREFERENCES_FIELD_DISTANCE, 100);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    void saveSettings() {
+        try {
+            SharedPreferences settings = getSharedPreferences(PREFERENCES_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+
+            editor.putInt(PREFERENCES_FIELD_SELECTED_QUERY_INDEX, selectedQueryIndex);
+            editor.putFloat(PREFERENCES_FIELD_DISTANCE, (float) distance);
+
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -71,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void handlePermissions() {
-        String[] perms = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION};
+        String[] perms = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION, Manifest.permission.FOREGROUND_SERVICE};
         if (!EasyPermissions.hasPermissions(this, perms)) {
             EasyPermissions.requestPermissions(this, "", 42, perms);
         }
@@ -114,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateDistanceLabel();
         initPreview();
+        saveSettings();
     }
 
     private void updateDistanceLabel() {
@@ -163,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
         dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(listener);
+        dropdown.setSelection(selectedQueryIndex);
     }
 
     private void initPreview() {
@@ -181,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     private void initDistance() {
         SeekBar bar = findViewById(R.id.distanceSeekBar);
 
-        bar.setProgress((int) Math.round(Math.log(distance)));
+        bar.setProgress((int) Math.round(Math.sqrt(distance)) + 1);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {

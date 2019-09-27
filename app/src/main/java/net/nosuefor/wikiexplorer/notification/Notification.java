@@ -12,6 +12,7 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import net.nosuefor.wikiexplorer.MainActivity;
 import net.nosuefor.wikiexplorer.R;
 import net.nosuefor.wikiexplorer.helper.Format;
 
@@ -21,7 +22,7 @@ import java.net.URL;
 
 public class Notification {
 
-    private static final String CHANNEL_ID = "C1";
+    private static final String CHANNEL_ID = "Wiki Explorer";
     private static final String IMAGE_PLACEHOLDER_URL = "https://upload.wikimedia.org/wikipedia/commons/4/49/Medium_placeholder.png";
     private Context context = null;
 
@@ -55,7 +56,7 @@ public class Notification {
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setSmallIcon(R.drawable.ic_room_24px)
                     .setContentTitle(title + " (" + Format.distance(distance) + ")")
                     .setContentText(text)
                     .setLargeIcon(bmp)
@@ -78,6 +79,20 @@ public class Notification {
             e.printStackTrace();
         }
 
+    }
+
+    public android.app.Notification createServiceNotification() {
+        // Tapping the notification will open the specified Activity.
+        Intent activityIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_explore_24px)
+                // .setContentTitle("Service is running")
+                .setContentIntent(pendingIntent);
+
+        return builder.build();
     }
 
     private NotificationCompat.Builder createBuilder() {

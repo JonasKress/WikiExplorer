@@ -3,7 +3,6 @@ package net.nosuefor.wikiexplorer.query;
 import net.nosuefor.wikiexplorer.model.Query;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class QueryList {
 
                 items.add(item);
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

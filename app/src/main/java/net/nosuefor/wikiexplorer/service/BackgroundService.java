@@ -52,12 +52,13 @@ public class BackgroundService extends Service {
 
                 SparqlQuery query = new SparqlQuery(getString(R.string.SPARQLEndpoint));
                 createNotificationsFromItems(query.execute(sparql, location));
-
             }
         }
     };
 
     private void createNotificationsFromItems(final ArrayList<Item> items) {
+        Log.d(this.toString(), "Create notifications:" + items.size());
+
         (new Thread(new Runnable() {
             public void run() {
                 for (int i = 0; i < items.size(); i++) {
@@ -90,6 +91,7 @@ public class BackgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         instance = this;
+
         Toast.makeText(this, "Notifications enabled", Toast.LENGTH_SHORT).show();
 
         notification = new Notification(this);
@@ -97,6 +99,7 @@ public class BackgroundService extends Service {
 
         locationListener = new LocationListener(BackgroundService.this, locationCallback);
 
+        startForeground(1, notification.createServiceNotification());
         return START_STICKY;
     }
 
