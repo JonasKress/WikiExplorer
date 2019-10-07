@@ -48,6 +48,10 @@
     "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P2848 wd:Q1228895. \n}"
   },
   {
+    "name": "Place of burial",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  ?item p:P119 ?statement  SERVICE wikibase:around {\n    ?statement pq:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAG E],en,es,de\". }\n ?item wdt:P18 ?image. \n}"
+  },
+  {
     "name": "Free Wifi",
     "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n ?item wdt:P2848 wd:Q1543615. \n}"
   },
