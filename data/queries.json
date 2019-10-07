@@ -4,8 +4,8 @@
     "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n ?item wdt:P18 ?image.\n}"
   },
   {
-    "name": "headquarters",
-    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  ?item ?prop ?statement  SERVICE wikibase:around {\n    ?statement pq:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAG E],en,es,de\". }\n ?item wdt:P18 ?image. \n}"
+    "name": "Headquarters",
+    "query": "SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {\n  ?item p:P159 ?statement  SERVICE wikibase:around {\n    ?statement pq:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAG E],en,es,de\". }\n ?item wdt:P18 ?image. \n}"
   },
   {
     "name": "Buildings",
