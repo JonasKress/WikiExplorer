@@ -4,12 +4,15 @@ Find objects around you powered by Wikidata SPARQL queries
 
 ## Todo
 ### Features
-- Show notification only once
+- Show Wikidata error messages
+- Show each notification only once
+- Notification actions as links from query
 - Update map preview on location change
-- UI i18n
+- UI i18n selector
 - Wikipedia summary
-- micro edits
-- auto queries
-- dismiss notification
+- Auto filter from queries
+- Dismiss notification
+- Notification content intent preferences
 
-### Code
+### Code improvements
+- UI i18n

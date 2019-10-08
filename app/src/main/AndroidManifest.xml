@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.nosuefor.wikiexplorer">
+    package="net.nousefor.wikiexplorer">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="net.nousefor.wikiexplorer.MainActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,12 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="net.nousefor.wikiexplorer.preferences.NotificationPreferencesActivity"
+            android:label="@string/ui_notification_preferences_title"></activity>
 
         <receiver
-            android:name=".notification.NotificationReceiver"
+            android:name="net.nousefor.wikiexplorer.notification.NotificationReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
-        <service android:name=".service.BackgroundService" />
+        <service android:name="net.nousefor.wikiexplorer.service.BackgroundService" />
 
     </application>
 

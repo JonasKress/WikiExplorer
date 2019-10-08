@@ -1,9 +1,8 @@
 <resources>
-    <string name="app_name">Wiki Explorer</string>
     <string name="SPARQLEndpoint"><![CDATA[
         https://query.wikidata.org/sparql?format=json&query=
     ]]></string>
-    <string name="SPARQLEmbed"> https://query.wikidata.org/embed.html?{rand}##defaultView:Map%0A
+    <string name="SPARQLEmbed"> https://query.wikidata.org/embed.html?{RAND}##defaultView:{VIEW}%0A
     </string>
     <string name="query">
 SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {
@@ -24,6 +23,30 @@ SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {
 }
 ORDER BY  ?countryLabel
     </string>
-    <string name="ui_label_distance">Distance</string>
+    <!-- key   -->
+    <!-- Notification settings   -->
+    <string name="notifications_unique">notifications_unique</string>
+    <string name="notifications_memory_clear">notifications_memory_clear</string>
+    <string name="notifications_wikipedia_summary">notifications_wikipedia_summary</string>
+    <string name="notifications_location_update_interval">notifications_location_update_interval</string>
+    <string name="notifications_amount_max">notifications_amount_max</string>
+    <string name="notifications_enable_edit">notifications_enable_edit</string>
 
+    <!-- UI   -->
+    <string name="app_name">Wiki Explorer</string>
+    <string name="ui_notification_preferences_title">Notification preferences</string>
+    <string name="ui_main_enable_notifications_label">Notifications</string>
+    <string name="ui_main_enable_notifications_enabled_label">Notifications enabled</string>
+    <string name="ui_main_notification_preferences_button">Notification preferences</string>
+    <string name="ui_notification_preferences_memory_clear">Memory has been cleared</string>
+    <string name="ui_notification_edit_warning_dialog_description"><![CDATA[
+        <h1>Enable Wikidata editing.</h1>
+        If you enable editing you will contribute to Wikidata.<br/>
+        You agree to <a href="https://foundation.wikimedia.org/wiki/Terms_of_Use">the terms of use of Wikidata</a>, and you irrevocably agree to release your contribution under the
+        <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 License</a>.<br/><br/>
+        Your IP address will be publicly visible if you make any edits. Please only enable editing if you know what you are doing!
+    ]]></string>
+    <string name="ui_notification_add_label_en">Add English label</string>
+    <string name="ui_notification_add_description_en">Add English description</string>
+    <string name="ui_notification_edit_saved">Wikidata edit saved.\nThank you for contributing!</string>
 </resources>
