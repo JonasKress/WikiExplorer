@@ -8,7 +8,6 @@
         android:persistent="true"
         android:summary="Show notification for each place only once"
         app:icon="@drawable/ic_room_24px"
-        app:isPreferenceVisible="false"
         app:title="Unique notification" />
 
     <Preference
@@ -16,8 +15,7 @@
         android:persistent="true"
         android:summary="Forget already shown notifications"
         android:title="Reset unique notifications"
-        app:icon="@drawable/ic_delete_black_24dp"
-        app:isPreferenceVisible="false" />
+        app:icon="@drawable/ic_delete_black_24dp" />
 
     <SwitchPreferenceCompat
         android:defaultValue="true"
@@ -25,7 +23,6 @@
         android:persistent="true"
         android:summary="Show article summary in notifications"
         app:icon="@drawable/ic_translate_black_24dp"
-        app:isPreferenceVisible="false"
         app:title="Wikipedia summary" />
 
     <SeekBarPreference

@@ -23,8 +23,22 @@ SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {
 }
 ORDER BY  ?countryLabel
     </string>
+    <string name="query_statistics">
+        #defaultView:BarChart
+
+SELECT (COUNT(?instanceLabel) AS ?count) ?instanceLabel (SAMPLE(?subclassLabel) AS ?label )  WHERE{
+{
+{QUERY}
+  }
+
+}
+
+group by ?instanceLabel
+ORDER BY desc(?count)
+LIMIT 20
+    </string>
     <!-- key   -->
-    <!-- Notification settings   -->
+    <!-- Notifications settings   -->
     <string name="notifications_unique">notifications_unique</string>
     <string name="notifications_memory_clear">notifications_memory_clear</string>
     <string name="notifications_wikipedia_summary">notifications_wikipedia_summary</string>
@@ -46,7 +60,15 @@ ORDER BY  ?countryLabel
         <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 License</a>.<br/><br/>
         Your IP address will be publicly visible if you make any edits. Please only enable editing if you know what you are doing!
     ]]></string>
+    <string name="ui_notification_wikipedia">Wikipedia</string>
+    <string name="ui_notification_wikidata">Wikidata</string>
+    <string name="ui_notification_map">Map</string>
+    <string name="ui_notification_add_image">Add image</string>
     <string name="ui_notification_add_label_en">Add English label</string>
     <string name="ui_notification_add_description_en">Add English description</string>
     <string name="ui_notification_edit_saved">Wikidata edit saved.\nThank you for contributing!</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class SparqlQuery {
 
-    private Api api = null;
+    private Api api;
 
     public SparqlQuery(String endpoint) {
 
@@ -52,8 +52,13 @@ public class SparqlQuery {
 
                     if (jsonRow.has("itemDescription"))
                         item.description = jsonRow.getJSONObject("itemDescription").getString("value");
+                    else
+                        item.description = "";
+
                     if (jsonRow.has("image"))
                         item.imageUrl = jsonRow.getJSONObject("image").getString("value").replace("http://", "https://");
+                    if (jsonRow.has("sitelink"))
+                        item.siteLink = jsonRow.getJSONObject("sitelink").getString("value");
 
                     item.location = jsonRow.getJSONObject("location").getString("value");
                     item.distance = jsonRow.getJSONObject("distance").getDouble("value") * 1000;

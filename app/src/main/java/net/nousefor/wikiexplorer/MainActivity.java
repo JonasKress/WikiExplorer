@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
@@ -23,8 +22,6 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,15 +30,17 @@ import com.google.android.material.snackbar.Snackbar;
 import net.nousefor.wikiexplorer.api.QueryList;
 import net.nousefor.wikiexplorer.helper.Format;
 import net.nousefor.wikiexplorer.model.Query;
+import net.nousefor.wikiexplorer.notification.Notifications;
 import net.nousefor.wikiexplorer.preferences.NotificationPreferencesActivity;
 import net.nousefor.wikiexplorer.service.BackgroundService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
-@RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
 public class MainActivity extends AppCompatActivity {
 
     final static String PREFERENCES_NAME = "WIKI_EXPLORER";
@@ -51,10 +50,15 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Query> queries = null;
     int selectedQueryIndex = 0;
     double distance = 100;
-    boolean showMap = true;
+    String resultView = "Map";
+    Map<Integer, String> resultViews = new HashMap<Integer, String>() {{
+        put(R.id.action_map, "Map");
+        put(R.id.action_images, "ImageGrid");
+        put(R.id.action_graph, "Graph");
+        put(R.id.action_tree, "Tree");
+        put(R.id.action_chart, "Barchart");
+    }};
 
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +107,11 @@ public class MainActivity extends AppCompatActivity {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             findViewById(R.id.settingsLayout).setVisibility(View.GONE);
             findViewById(R.id.divider).setVisibility(View.GONE);
+            findViewById(R.id.divider2).setVisibility(View.GONE);
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             findViewById(R.id.settingsLayout).setVisibility(View.VISIBLE);
             findViewById(R.id.divider).setVisibility(View.VISIBLE);
+            findViewById(R.id.divider2).setVisibility(View.VISIBLE);
         }
     }
 
@@ -170,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             query = queries.get(selectedQueryIndex).query;
         }
 
-        query = query.replaceAll("\"\\[AUTO\\_LANGUAGE\\]\"", Locale.getDefault().getLanguage())
+        query = query.replaceAll("\\[AUTO\\_LANGUAGE\\]", Locale.getDefault().getLanguage())
                 .replaceAll("\"\\[RADIUS\\]\"", (distance / 1000.0) + "");
 
         Log.d(Thread.currentThread().getStackTrace().toString(), query);
@@ -216,20 +222,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String url = (getString(R.string.SPARQLEmbed) + getQuery()).replace("{RAND}", ("" + Math.random()));
+        String query = getQuery();
+        if (resultView == resultViews.get(R.id.action_chart))
+            query = getString(R.string.query_statistics).replace("{QUERY}", query);
 
-        if (showMap)
-            url = url.replace("{VIEW}", "Map");
-        else
-            url = url.replace("{VIEW}", "ImageGrid");
-
+        String url = (getString(R.string.SPARQLEmbed) + query)
+                .replace("{RAND}", ("" + Math.random()))
+                .replace("{VIEW}", resultView);
         view.loadUrl(url);
     }
 
     void initDistance() {
         final SeekBar bar = findViewById(R.id.distanceSeekBar);
+        bar.setProgress(((int) Math.pow(Math.E, Math.log(distance) / 2.5)) + 1);
 
-        bar.setProgress((int) Math.round(Math.sqrt(distance)) + 1);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -242,8 +248,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // TODO Auto-generated method stub
-                distance = Math.pow(progress + 1, 2);
+                distance = Math.pow(progress + 1, 2.5);
+
                 updateDistanceLabel();
                 bar.setContentDescription(Format.distance(distance));
             }
@@ -280,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(activity, BackgroundService.class);
                     stopService(intent);
+                    (new Notifications(getBaseContext())).removeAll();
                 }
             }
         });
@@ -289,15 +296,8 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView view = findViewById(R.id.navigationView);
         view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.action_map:
-                        showMap = true;
-                        break;
-                    case R.id.action_images:
-                        showMap = false;
-                        break;
-                }
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                resultView = resultViews.get(menuItem.getItemId());
                 update();
                 return true;
             }

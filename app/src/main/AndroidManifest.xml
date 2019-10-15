@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.nousefor.wikiexplorer">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="net.nousefor.wikiexplorer.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,20 +25,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="net.nousefor.wikiexplorer.preferences.NotificationPreferencesActivity"
-            android:label="@string/ui_notification_preferences_title"></activity>
+            android:name=".preferences.NotificationPreferencesActivity"
+            android:label="@string/ui_notification_preferences_title" />
 
         <receiver
-            android:name="net.nousefor.wikiexplorer.notification.NotificationReceiver"
+            android:name=".notification.NotificationReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
-        <service android:name="net.nousefor.wikiexplorer.service.BackgroundService" />
+            android:exported="true" />
 
+        <service android:name=".service.BackgroundService" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 </manifest>

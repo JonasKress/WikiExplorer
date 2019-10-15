@@ -3,7 +3,6 @@ package net.nousefor.wikiexplorer.preferences;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -19,6 +17,7 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import net.nousefor.wikiexplorer.MainActivity;
 import net.nousefor.wikiexplorer.R;
+import net.nousefor.wikiexplorer.notification.ItemNotificationsGeneratorThread;
 import net.nousefor.wikiexplorer.service.BackgroundService;
 
 
@@ -36,7 +35,6 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
                 .commit();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     public boolean onOptionsItemSelected(MenuItem item) {
         updateBackgroundService();
 
@@ -55,7 +53,6 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.notifications_preferences, rootKey);
-
 
             initMemoryClearButton();
             initEnableEditSwitch();
@@ -105,6 +102,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
+                    ItemNotificationsGeneratorThread.resetNotificationMemory(getContext());
                     Toast.makeText(getContext(), getString(R.string.ui_notification_preferences_memory_clear), Toast.LENGTH_SHORT).show();
                     return true;
                 }

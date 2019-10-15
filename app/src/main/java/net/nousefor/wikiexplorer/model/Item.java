@@ -8,5 +8,6 @@ public class Item {
     public String imageUrl = null;
     public double distance = 0;
     public String location = null;
+    public String siteLink = null;
 
 }

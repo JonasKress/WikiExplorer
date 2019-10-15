@@ -1,22 +1,23 @@
 package net.nousefor.wikiexplorer.api;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class Wikidata {
 
     private static final String WIKIDATA_API_URL = "https://www.wikidata.org/w/api.php";
 
     private static final String API_ACTION_TOKEN = "action=query&format=json&meta=tokens";
-    private static final String API_ACTION_SET_LABEL = "action=wbsetlabel&format=json&id={ID}&token={TOKEN}&language={LANG}&value={VALUE}";
+
     private static final String API_ACTION_GET_LABEL = "action=wbgetentities&format=json&ids={ID}&props=labels&languages={LANG}";
-    private static final String API_ACTION_SET_DESCRIPTION = "action=wbsetdescription&format=json&id={ID}&token={TOKEN}&language={LANG}&value={VALUE}";
+    private static final String API_ACTION_SET_LABEL = "action=wbsetlabel&format=json&id={ID}&token={TOKEN}&language={LANG}&value={VALUE}";
+
     private static final String API_ACTION_GET_DESCRIPTION = "action=wbgetentities&format=json&ids={ID}&props=descriptions&languages={LANG}";
+    private static final String API_ACTION_SET_DESCRIPTION = "action=wbsetdescription&format=json&id={ID}&token={TOKEN}&language={LANG}&value={VALUE}";
+
+    private static final String API_ACTION_GET_IMAGE = "action=wbgetclaims&format=json&entity={ID}&property=P18";
+    private static final String API_ACTION_SET_IMAGE = "action=wbcreateclaim&format=json&entity={ID}&snaktype=value&property=P18&value=%22{IMAGE_URL}%22&token={TOKEN}";
 
     private Api api;
 
@@ -66,7 +67,7 @@ public class Wikidata {
         return null;
     }
 
-    boolean setDescription(String id, String language, String value) {
+    public boolean setDescription(String id, String language, String value) {
         try {
             JSONObject json = new JSONObject(api.post(API_ACTION_SET_DESCRIPTION
                     .replace("{ID}", id)
@@ -81,7 +82,7 @@ public class Wikidata {
         return false;
     }
 
-    String getDescription(String id, String language) {
+    public String getDescription(String id, String language) {
         try {
             JSONObject json = new JSONObject(api.post(API_ACTION_GET_DESCRIPTION
                     .replace("{ID}", id)
@@ -96,5 +97,39 @@ public class Wikidata {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String getImage(String id) {
+        try {
+            JSONObject json = new JSONObject(api.post(API_ACTION_GET_IMAGE
+                    .replace("{ID}", id)
+            ));
+
+            JSONArray array = json.getJSONObject("claims")
+                    .getJSONArray("P18");
+
+            return array
+                    .getJSONObject(array.length() - 1)
+                    .getJSONObject("mainsnak")
+                    .getJSONObject("datavalue")
+                    .getString("value");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean setImage(String id, String imageUrl) {
+        try {
+            JSONObject json = new JSONObject(api.post(API_ACTION_SET_IMAGE
+                    .replace("{ID}", id)
+                    .replace("{IMAGE_URL}", api.encode(imageUrl))
+                    .replace("{TOKEN}", api.encode(getToken()))
+            ));
+            return json.getInt("success") == 1;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

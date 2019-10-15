@@ -1,9 +1,5 @@
 package net.nousefor.wikiexplorer.api;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -46,7 +43,15 @@ class Api {
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    String decode(String value) {
+        try {
+            return URLDecoder.decode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     String post(String urlParameters) {
         try {
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);

@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextAppearance.AppCompat.Notification"></style>
+
+    <style name="TextAppearance.AppCompat.Notification.Title"></style>
+
+    <style name="TextAppearance.AppCompat.Notification.Description"></style>
+
 </resources>
