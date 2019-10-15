@@ -70,5 +70,9 @@
   {
     "name": "Items with Wikipedia article",
     "query": "SELECT DISTINCT ?item ?itemLabel ?itemDescription ?image ?location ?distance ?sitelink WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n OPTIONAL { ?item wdt:P18 ?image. } \n ?sitelink schema:about ?item.\n    FILTER(REGEX(STR(?sitelink), \"[AUTO_LANGUAGE].wikipedia.org/wiki/\")) \n}\nORDER BY asc(?distance)"
+  },
+  {
+    "name": "Items with Wikipedia and missing image",
+    "query": "SELECT DISTINCT ?item ?itemLabel ?itemDescription ?image ?location ?distance ?sitelink WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n OPTIONAL { ?item wdt:P18 ?image. } \n ?sitelink schema:about ?item.\n    FILTER(REGEX(STR(?sitelink), \"[AUTO_LANGUAGE].wikipedia.org/wiki/\")) \n FILTER(NOT EXISTS {\n  ?item wdt:P18 ?image\n  })  \n}\nORDER BY asc(?distance)"
   }
 ]
