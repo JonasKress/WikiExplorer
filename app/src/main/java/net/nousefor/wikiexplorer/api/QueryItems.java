@@ -3,7 +3,7 @@ package net.nousefor.wikiexplorer.api;
 import android.location.Location;
 import android.util.Log;
 
-import net.nousefor.wikiexplorer.model.Item;
+import net.nousefor.wikiexplorer.model.item.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,23 +11,23 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SparqlQuery {
+public class QueryItems {
 
     private Api api;
 
-    public SparqlQuery(String endpoint) {
+    public QueryItems(String endpoint) {
 
         this.api = new Api(endpoint);
     }
 
-    public ArrayList<Item> execute(String query, Location location) {
+    public ArrayList<Item> execute(String sparql, Location location) {
 
-        query = query.replaceAll("\"\\[AUTO\\_COORDINATES\\]\"",
+        sparql = sparql.replaceAll("\"\\[AUTO\\_COORDINATES\\]\"",
                 "\"Point(" + location.getLongitude()
                         + " " + location.getLatitude() + ")\"^^geo:wktLiteral");
 
-        Log.d(this.toString(), "Execute query" + query);
-        return createItems(api.get(api.encode(query)));
+        Log.d(this.toString(), "Execute sparql" + sparql);
+        return createItems(api.get(api.encode(sparql)));
     }
 
 
@@ -70,7 +70,7 @@ public class SparqlQuery {
 
 
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
