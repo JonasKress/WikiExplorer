@@ -20,7 +20,7 @@ public class WikidataTest {
         String result = w.getToken();
 
         assertNotNull(result);
-        assertTrue(result.length() > 5);
+        assertTrue(result.length() > 0);
     }
 
     @Test
