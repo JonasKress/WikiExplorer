@@ -81,6 +81,24 @@
   },
   {
     "name": "Add wheelchair accessibility (P2846)",
-    "query": "SELECT DISTINCT ?item ?itemLabel ?itemDescription ?image ?location ?distance ?sitelink WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n OPTIONAL { ?item wdt:P18 ?image. } \n OPTIONAL {\n    ?sitelink schema:about ?item.\n    FILTER(REGEX(STR(?sitelink), \"[AUTO_LANGUAGE].wikipedia.org/wiki/\"))\n  }\n   FILTER(NOT EXISTS {\n   ?item wdt:P2846 ?accessibility  \n  })\n}\nORDER BY asc(?distance)"
+    "query": "SELECT DISTINCT ?item ?itemLabel ?itemDescription ?image ?location ?distance ?sitelink WHERE {\n  SERVICE wikibase:around {\n    ?item wdt:P625 ?location.\n    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".\n    bd:serviceParam wikibase:radius \"[RADIUS]\".\n    bd:serviceParam wikibase:distance ?distance.\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en,es,de\". }\n OPTIONAL { ?item wdt:P18 ?image. } \n OPTIONAL {\n    ?sitelink schema:about ?item.\n    FILTER(REGEX(STR(?sitelink), \"[AUTO_LANGUAGE].wikipedia.org/wiki/\"))\n  }\n   FILTER(NOT EXISTS {\n   ?item wdt:P2846 ?accessibility  \n  })\n}\nORDER BY asc(?distance)",
+    "actions": [
+      {
+        "type": "addStatement",
+        "labels": {
+          "en": "♿ accessible ✔"
+        },
+        "propertyId": "P2846",
+        "value": "Q24192067"
+      },
+      {
+        "type": "addStatement",
+        "labels": {
+          "en": "♿ inaccessible ✘"
+        },
+        "propertyId": "P2846",
+        "value": "Q24192069"
+      }
+    ]
   }
 ]
