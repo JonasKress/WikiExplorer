@@ -1,4 +1,4 @@
-package net.nousefor.wikiexplorer.model;
+package net.nousefor.wikiexplorer.model.item;
 
 public class Item {
 

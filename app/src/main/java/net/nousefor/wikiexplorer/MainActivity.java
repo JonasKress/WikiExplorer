@@ -29,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import net.nousefor.wikiexplorer.api.QueryList;
 import net.nousefor.wikiexplorer.helper.Format;
-import net.nousefor.wikiexplorer.model.Query;
+import net.nousefor.wikiexplorer.model.query.Query;
 import net.nousefor.wikiexplorer.notification.Notifications;
 import net.nousefor.wikiexplorer.preferences.NotificationPreferencesActivity;
 import net.nousefor.wikiexplorer.service.BackgroundService;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     final static String PREFERENCES_NAME = "WIKI_EXPLORER";
     final static String PREFERENCES_FIELD_SELECTED_QUERY_INDEX = "PREFERENCES_SELECTED_QUERY_INDEX";
     final static String PREFERENCES_FIELD_DISTANCE = "PREFERENCES_FIELD_DISTANCE";
+    private static MainActivity instance;
 
     ArrayList<Query> queries = null;
     int selectedQueryIndex = 0;
@@ -58,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         put(R.id.action_tree, "Tree");
         put(R.id.action_chart, "Barchart");
     }};
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         initEnableNotificationsSwitch();
         initPreview();
         initNavigationView();
+
+        instance = this;
     }
 
     void readSettings() {
@@ -115,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        update();
+    }
+
     void handlePermissions() {
         String[] perms = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION, Manifest.permission.FOREGROUND_SERVICE};
         if (!EasyPermissions.hasPermissions(this, perms)) {
@@ -154,9 +167,10 @@ public class MainActivity extends AppCompatActivity {
 
     void update() {
         if (BackgroundService.getInstance() != null)
-            BackgroundService.getInstance().setSparql(getQuery());
+            BackgroundService.getInstance().setQuery(getQuery());
 
         updateDistanceLabel();
+        updateEnableNotificationsSwitch();
         initPreview();
         saveSettings();
     }
@@ -166,20 +180,20 @@ public class MainActivity extends AppCompatActivity {
         label.setText(" " + Format.distance(distance));
     }
 
-    String getQuery() {
+    public Query getQuery() {
 
-        String query = null;
+        Query query = null;
 
-        if (queries.size() == 0) {
-            query = getString(R.string.query);
-        } else {
-            query = queries.get(selectedQueryIndex).query;
-        }
+        if (queries == null || queries.size() == 0)
+            return new Query();
 
-        query = query.replaceAll("\\[AUTO\\_LANGUAGE\\]", Locale.getDefault().getLanguage())
+        query = queries.get(selectedQueryIndex).clone();
+
+
+        query.sparql = query.sparql.replaceAll("\\[AUTO\\_LANGUAGE\\]", Locale.getDefault().getLanguage())
                 .replaceAll("\"\\[RADIUS\\]\"", (distance / 1000.0) + "");
 
-        Log.d(Thread.currentThread().getStackTrace().toString(), query);
+        Log.d(Thread.currentThread().getStackTrace().toString(), query.sparql);
         return query;
     }
 
@@ -222,9 +236,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String query = getQuery();
-        if (resultView == resultViews.get(R.id.action_chart))
-            query = getString(R.string.query_statistics).replace("{QUERY}", query);
+        String query = getQuery().sparql;
 
         String url = (getString(R.string.SPARQLEmbed) + query)
                 .replace("{RAND}", ("" + Math.random()))
@@ -268,21 +280,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    void updateEnableNotificationsSwitch() {
+        Switch sw = findViewById(R.id.enableNotifications);
+
+        if (BackgroundService.getInstance() != null)
+            sw.setChecked(true);
+        else
+            sw.setChecked(false);
+    }
+
     void initEnableNotificationsSwitch() {
         final MainActivity activity = this;
         Switch sw = findViewById(R.id.enableNotifications);
 
-        if (BackgroundService.getInstance() != null) {
-            sw.setChecked(true);
-        }
+        updateEnableNotificationsSwitch();
 
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Intent intent = new Intent(activity, BackgroundService.class);
-                    intent.putExtra(BackgroundService.EXTRA_SPARQL, getQuery());
                     startService(intent);
-
                 } else {
                     Intent intent = new Intent(activity, BackgroundService.class);
                     stopService(intent);

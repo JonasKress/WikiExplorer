@@ -16,8 +16,8 @@ public class Wikidata {
     private static final String API_ACTION_GET_DESCRIPTION = "action=wbgetentities&format=json&ids={ID}&props=descriptions&languages={LANG}";
     private static final String API_ACTION_SET_DESCRIPTION = "action=wbsetdescription&format=json&id={ID}&token={TOKEN}&language={LANG}&value={VALUE}";
 
-    private static final String API_ACTION_GET_IMAGE = "action=wbgetclaims&format=json&entity={ID}&property=P18";
-    private static final String API_ACTION_SET_IMAGE = "action=wbcreateclaim&format=json&entity={ID}&snaktype=value&property=P18&value=%22{IMAGE_URL}%22&token={TOKEN}";
+    private static final String API_ACTION_GET_PROPERTY = "action=wbgetclaims&format=json&entity={ID}&property={PROPERTYID}";
+    private static final String API_ACTION_SET_PROPERTY = "action=wbcreateclaim&format=json&entity={ID}&snaktype=value&property={PROPERTYID}&value={VALUE}&token={TOKEN}";
 
     private Api api;
 
@@ -31,11 +31,11 @@ public class Wikidata {
             return json.getJSONObject("query").getJSONObject("tokens").getString("csrftoken");
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public boolean setLabel(String id, String language, String value) {
+    public boolean setLabel(String id, String language, String value) throws Exception {
         try {
             JSONObject json = new JSONObject(api.post(API_ACTION_SET_LABEL
                     .replace("{ID}", id)
@@ -43,11 +43,15 @@ public class Wikidata {
                     .replace("{LANG}", language)
                     .replace("{TOKEN}", api.encode(getToken()))
             ));
+
+            if (json.has("error"))
+                throw new Exception(json.getJSONObject("error").getString("info"));
+
             return json.getInt("success") == 1;
         } catch (JSONException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public String getLabel(String id, String language) {
@@ -61,13 +65,13 @@ public class Wikidata {
                     .getJSONObject("labels")
                     .getJSONObject(language)
                     .getString("value");
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public boolean setDescription(String id, String language, String value) {
+    public boolean setDescription(String id, String language, String value) throws Exception {
         try {
             JSONObject json = new JSONObject(api.post(API_ACTION_SET_DESCRIPTION
                     .replace("{ID}", id)
@@ -75,11 +79,15 @@ public class Wikidata {
                     .replace("{LANG}", language)
                     .replace("{TOKEN}", api.encode(getToken()))
             ));
+
+            if (json.has("error"))
+                throw new Exception(json.getJSONObject("error").getString("info"));
+
             return json.getInt("success") == 1;
         } catch (JSONException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public String getDescription(String id, String language) {
@@ -93,43 +101,55 @@ public class Wikidata {
                     .getJSONObject("descriptions")
                     .getJSONObject(language)
                     .getString("value");
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public String getImage(String id) {
+    public String getProperty(String id, String PropertyId) {
         try {
-            JSONObject json = new JSONObject(api.post(API_ACTION_GET_IMAGE
+            JSONObject json = new JSONObject(api.post(API_ACTION_GET_PROPERTY
                     .replace("{ID}", id)
+                    .replace("{PROPERTYID}", PropertyId)
             ));
 
             JSONArray array = json.getJSONObject("claims")
-                    .getJSONArray("P18");
+                    .getJSONArray(PropertyId);
 
             return array
                     .getJSONObject(array.length() - 1)
                     .getJSONObject("mainsnak")
                     .getJSONObject("datavalue")
                     .getString("value");
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public boolean setImage(String id, String imageUrl) {
+    public boolean setProperty(String id, String PropertyId, String value) throws Exception {
+        if (value.matches("[A-Z][0-9]+"))
+            value = "{\"id\":\"" + value + "\"}";
+        else
+            value = "\"" + value + "\"";
+
         try {
-            JSONObject json = new JSONObject(api.post(API_ACTION_SET_IMAGE
+            JSONObject json = new JSONObject(api.post(API_ACTION_SET_PROPERTY
                     .replace("{ID}", id)
-                    .replace("{IMAGE_URL}", api.encode(imageUrl))
+                    .replace("{PROPERTYID}", PropertyId)
+                    .replace("{VALUE}", api.encode(value))
                     .replace("{TOKEN}", api.encode(getToken()))
             ));
+
+            if (json.has("error"))
+                throw new Exception(json.getJSONObject("error").getString("info"));
+
             return json.getInt("success") == 1;
         } catch (JSONException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
+
 }

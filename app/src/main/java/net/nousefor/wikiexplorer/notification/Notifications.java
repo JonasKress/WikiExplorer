@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.view.View;
@@ -14,21 +13,13 @@ import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.app.RemoteInput;
 
 import net.nousefor.wikiexplorer.MainActivity;
 import net.nousefor.wikiexplorer.R;
-import net.nousefor.wikiexplorer.model.ItemNotification;
+import net.nousefor.wikiexplorer.model.item.ItemNotification;
+
 
 public class Notifications {
-
-    public static final String ACTION_OPEN_MAP = "MAP";
-    public static final String ACTION_OPEN_WIKIPEDIA = "WIKIPEDIA";
-    public static final String ACTION_OPEN_WIKIDATA = "WIKIDATA";
-
-    public static final String ACTION_EDIT_LABEL = "EDIT_LABEL";
-    public static final String ACTION_EDIT_DESCRIPTION = "EDIT_DESCRIPTION";
-    public static final String ACTION_EDIT_IMAGE = "EDIT_IMAGE";
 
     private static final String CHANNEL_ID = "Wiki Explorer";
 
@@ -38,71 +29,6 @@ public class Notifications {
         this.context = context;
         createNotificationChannel();
 
-    }
-
-    private Bundle getExtrasBundle(int notificationId, String itemId, String data) {
-        Bundle extras = new Bundle();
-        extras.putInt(NotificationReceiver.EXTRA_NOTIFICATION_ID, notificationId);
-        extras.putString(NotificationReceiver.EXTRA_ITEM_ID, itemId);
-        extras.putString(NotificationReceiver.EXTRA_DATA, data);
-
-        return extras;
-    }
-
-    public NotificationCompat.Action createAction(ItemNotification itemNotification, String action) {
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        int icon = R.drawable.ic_edit_black_24dp;
-        Bundle extras = getExtrasBundle(itemNotification.notificationId, itemNotification.itemId, null);
-        RemoteInput remoteInput = null;
-        String label;
-
-        switch (action) {
-            case ACTION_OPEN_WIKIDATA:
-                label = context.getString(R.string.ui_notification_wikidata);
-                intent.setAction(NotificationReceiver.ACTION_OPEN_WIKIDATA);
-                break;
-            case ACTION_OPEN_WIKIPEDIA:
-                label = context.getString(R.string.ui_notification_wikipedia);
-                intent.setAction(NotificationReceiver.ACTION_OPEN_WIKIPEDIA);
-                if (itemNotification.wikipediaUrl != null)
-                    extras = getExtrasBundle(itemNotification.notificationId, itemNotification.itemId, itemNotification.wikipediaUrl);
-                break;
-            case ACTION_OPEN_MAP:
-                label = context.getString(R.string.ui_notification_map);
-                intent.setAction(NotificationReceiver.ACTION_OPEN_MAP);
-                extras = getExtrasBundle(itemNotification.notificationId, itemNotification.itemId, itemNotification.location);
-                break;
-            case ACTION_EDIT_IMAGE:
-                label = context.getString(R.string.ui_notification_add_image);
-                intent.setAction(NotificationReceiver.ACTION_EDIT_IMAGE);
-                extras = getExtrasBundle(itemNotification.notificationId, itemNotification.itemId, itemNotification.imageUrl);
-                break;
-            case ACTION_EDIT_LABEL:
-                label = context.getString(R.string.ui_notification_add_label_en);
-                intent.setAction(NotificationReceiver.ACTION_EDIT_LABEL);
-                remoteInput = new RemoteInput.Builder(NotificationReceiver.REMOTE_INPUT_KEY)
-                        .setLabel(label)
-                        .build();
-                break;
-            case ACTION_EDIT_DESCRIPTION:
-                label = context.getString(R.string.ui_notification_add_description_en);
-                intent.setAction(NotificationReceiver.ACTION_EDIT_DESCRIPTION);
-                remoteInput = new RemoteInput.Builder(NotificationReceiver.REMOTE_INPUT_KEY)
-                        .setLabel(label)
-                        .build();
-                break;
-            default:
-                return null;
-        }
-
-        intent.putExtras(extras);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, itemNotification.notificationId, intent, 0);
-        NotificationCompat.Action.Builder notification = new NotificationCompat.Action.Builder(icon, label, pendingIntent);
-
-        if (remoteInput != null)
-            notification.addRemoteInput(remoteInput).setAllowGeneratedReplies(true);
-
-        return notification.build();
     }
 
     public void showItemNotification(ItemNotification itemNotification) {
@@ -122,7 +48,6 @@ public class Notifications {
             itemNotificationExpanded.setViewVisibility(R.id.item_notificaton_expanded_image, View.VISIBLE);
             itemNotificationExpanded.setInt(R.id.item_notificaton_expanded_description, "setMaxLines", 5);
         }
-
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_room_24px)
@@ -151,7 +76,8 @@ public class Notifications {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_edit_black_24dp)
-                .setContentTitle(message);
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentText(message);
 
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(id, builder.build());

@@ -17,7 +17,6 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import net.nousefor.wikiexplorer.MainActivity;
 import net.nousefor.wikiexplorer.R;
-import net.nousefor.wikiexplorer.notification.ItemNotificationsGeneratorThread;
 import net.nousefor.wikiexplorer.service.BackgroundService;
 
 
@@ -102,7 +101,7 @@ public class NotificationPreferencesActivity extends AppCompatActivity {
             button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    ItemNotificationsGeneratorThread.resetNotificationMemory(getContext());
+                    BackgroundService.resetNotificationMemory(getContext());
                     Toast.makeText(getContext(), getString(R.string.ui_notification_preferences_memory_clear), Toast.LENGTH_SHORT).show();
                     return true;
                 }

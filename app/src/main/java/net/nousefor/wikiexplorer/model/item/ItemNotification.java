@@ -1,8 +1,10 @@
-package net.nousefor.wikiexplorer.model;
+package net.nousefor.wikiexplorer.model.item;
 
 import android.graphics.Bitmap;
 
 import androidx.core.app.NotificationCompat;
+
+import net.nousefor.wikiexplorer.model.query.Query;
 
 public class ItemNotification {
 
@@ -22,4 +24,5 @@ public class ItemNotification {
     public String imageUrl;
 
     public NotificationCompat.Action[] actions;
+    public Query query;
 }
