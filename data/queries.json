@@ -28,7 +28,7 @@
       {
         "type": "ActionAddStatementIfNotExist",
         "labels": {
-          "en": "✔🚽Public 🚽🚽🚽toilet"
+          "en": "✔Public 🚽"
         },
         "propertyId": "P912",
         "value": "Q813966"
