@@ -37,21 +37,13 @@ public class BackgroundService extends Service {
     Query query;
 
     boolean isDestroyed = false;
-
+    int maximumNotifications = 0;
+    int locationUpdateInterval = 5;
     //preferences
     private boolean enableWikipediaSummary = false;
     private boolean enableEditing = false;
     private boolean enableUniqueMode = false;
-
-    int maximumNotifications = 0;
-    int locationUpdateInterval = 5;
     private ItemNotificationBuilder itemNotificationBuilder;
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -96,6 +88,16 @@ public class BackgroundService extends Service {
         SharedPreferences.Editor editor = settings.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public static BackgroundService getInstance() {
+        return instance;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     public void setQuery(Query query) {
@@ -164,11 +166,6 @@ public class BackgroundService extends Service {
 
         isDestroyed = true;
         instance = null;
-    }
-
-
-    public static BackgroundService getInstance() {
-        return instance;
     }
 
 

@@ -1,5 +1,6 @@
 package net.nousefor.wikiexplorer.api;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -24,6 +25,7 @@ public class WikidataTest {
     }
 
     @Test
+    @Ignore
     public void setLabel() throws Exception {
         Wikidata w = new Wikidata();
         boolean result = w.setLabel(ITEM_ID, LANGUAGE, LABEL);
@@ -31,6 +33,7 @@ public class WikidataTest {
     }
 
     @Test
+    @Ignore
     public void getLabel() throws Exception {
         Wikidata w = new Wikidata();
         w.setLabel(ITEM_ID, LANGUAGE, LABEL);
@@ -40,6 +43,7 @@ public class WikidataTest {
 
 
     @Test
+    @Ignore
     public void setDescription() throws Exception {
         Wikidata w = new Wikidata();
         boolean result = w.setDescription(ITEM_ID, LANGUAGE, DESCRIPTION);
@@ -47,6 +51,7 @@ public class WikidataTest {
     }
 
     @Test
+    @Ignore
     public void getDescription() throws Exception {
         Wikidata w = new Wikidata();
         w.setDescription(ITEM_ID, LANGUAGE, DESCRIPTION);
@@ -56,6 +61,7 @@ public class WikidataTest {
     }
 
     @Test
+    @Ignore
     public void getProperty() throws Exception {
         Wikidata w = new Wikidata();
         w.setProperty(ITEM_ID, PROPERTY_ID, ITEM_ID);
@@ -65,6 +71,7 @@ public class WikidataTest {
     }
 
     @Test
+    @Ignore
     public void setProperty() throws Exception {
         Wikidata w = new Wikidata();
         boolean result = w.setProperty(ITEM_ID, PROPERTY_ID, ITEM_ID);
