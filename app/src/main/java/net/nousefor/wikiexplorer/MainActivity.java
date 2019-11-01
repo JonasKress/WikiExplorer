@@ -30,7 +30,6 @@ import com.google.android.material.snackbar.Snackbar;
 import net.nousefor.wikiexplorer.api.QueryList;
 import net.nousefor.wikiexplorer.helper.Format;
 import net.nousefor.wikiexplorer.model.query.Query;
-import net.nousefor.wikiexplorer.notification.Notifications;
 import net.nousefor.wikiexplorer.preferences.NotificationPreferencesActivity;
 import net.nousefor.wikiexplorer.service.BackgroundService;
 
@@ -303,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(activity, BackgroundService.class);
                     stopService(intent);
-                    (new Notifications(getBaseContext())).removeAll();
                 }
             }
         });

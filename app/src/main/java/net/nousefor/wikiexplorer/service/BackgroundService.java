@@ -32,8 +32,9 @@ public class BackgroundService extends Service {
     static BackgroundService instance = null;
 
     LocationListener locationListener;
-    NotificationsGeneratorThread notificationsGeneratorThread;
     Notifications notifications;
+    ItemNotificationBuilder itemNotificationBuilder;
+    NotificationsGeneratorThread notificationsGeneratorThread;
     Query query;
 
     boolean isDestroyed = false;
@@ -43,7 +44,7 @@ public class BackgroundService extends Service {
     private boolean enableWikipediaSummary = false;
     private boolean enableEditing = false;
     private boolean enableUniqueMode = false;
-    private ItemNotificationBuilder itemNotificationBuilder;
+
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -54,34 +55,46 @@ public class BackgroundService extends Service {
                 return;
             }
 
-            for (Location location : locationResult.getLocations()) {
+            for (final Location location : locationResult.getLocations()) {
                 if (isDestroyed)
                     break;
 
-                Log.d("main", "Lat: " + location.getLatitude() + "Long: " + location.getLongitude());
-                QueryItems api = new QueryItems(getString(R.string.SPARQLEndpoint));
-                List<Item> resultSet = api.execute(query.sparql, location);
-
-                if (isDestroyed)
-                    break;
-
-                if (maximumNotifications > 0 && resultSet.size() > maximumNotifications)
-                    resultSet = resultSet.subList(0, maximumNotifications + 1);
-
-
-                for (Item item : resultSet) {
-                    if (isSkippedNotification(item.id))
-                        continue;
-
-                    itemNotificationBuilder.setEnableEditing(enableEditing);
-                    itemNotificationBuilder.setEnableWikipediaSummary(enableWikipediaSummary);
-
-                    notificationsGeneratorThread.addNotification(itemNotificationBuilder.build(item, BackgroundService.this.query));
-
-                }
+                new Thread() {
+                    @Override
+                    public void run() {
+                        createNotifications(location);
+                    }
+                }.start();
             }
         }
     };
+
+    private void createNotifications(Location location) {
+        if (isDestroyed)
+            return;
+
+        Log.d("main", "Lat: " + location.getLatitude() + "Long: " + location.getLongitude());
+        QueryItems api = new QueryItems(getString(R.string.SPARQLEndpoint));
+        List<Item> resultSet = api.execute(query.sparql, location);
+
+        if (isDestroyed)
+            return;
+
+        if (maximumNotifications > 0 && resultSet.size() > maximumNotifications)
+            resultSet = resultSet.subList(0, maximumNotifications + 1);
+
+
+        for (Item item : resultSet) {
+            if (isSkippedNotification(item.id))
+                continue;
+
+            itemNotificationBuilder.setEnableEditing(enableEditing);
+            itemNotificationBuilder.setEnableWikipediaSummary(enableWikipediaSummary);
+
+            notificationsGeneratorThread.addNotification(itemNotificationBuilder.build(item, BackgroundService.this.query));
+
+        }
+    }
 
     public static void resetNotificationMemory(Context context) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCES_NAME, 0);
@@ -166,6 +179,8 @@ public class BackgroundService extends Service {
 
         isDestroyed = true;
         instance = null;
+
+        notifications.removeAll();
     }
 
 
