@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="@string/preferences_notifications_unique"
+        android:persistent="true"
+        android:summary="Show notification for each place only once"
+        app:icon="@drawable/ic_room_24px"
+        app:title="Unique notification" />
+
+    <Preference
+        android:key="@string/preferences_notifications_memory_clear"
+        android:persistent="true"
+        android:summary="Forget already shown notifications"
+        android:title="Reset unique notifications"
+        app:icon="@drawable/ic_delete_black_24dp" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="@string/preferences_notifications_wikipedia_summary"
+        android:persistent="true"
+        android:summary="Show article summary in notifications"
+        app:icon="@drawable/ic_translate_black_24dp"
+        app:title="Wikipedia summary" />
+
+    <SeekBarPreference
+        android:key="@string/preferences_notifications_location_update_interval"
+        android:max="180"
+        android:persistent="true"
+        android:summary="Minutes between updates of the GPS location"
+        app:defaultValue="5"
+        app:icon="@drawable/ic_update_black_24dp"
+        app:min="1"
+        app:showSeekBarValue="true"
+        app:title="Location update" />
+
+    <SeekBarPreference
+        max="100"
+        android:key="@string/preferences_notifications_amount_max"
+        android:persistent="true"
+        app:defaultValue="0"
+        app:icon="@drawable/ic_notifications_off_black_24dp"
+        app:showSeekBarValue="true"
+        app:summary="Limit of notifications to show per location update (0=unlimited)"
+        app:title="Maximum notifications" />
+    <SwitchPreferenceCompat
+        android:key="@string/preferences_notifications_enable_edit"
+        android:persistent="true"
+        android:summary="Allow to add images, labels or descriptions to Wikidata Items"
+        app:icon="@drawable/ic_edit_black_24dp"
+        app:title="Enable editing" />
+
+    <Preference
+        android:key="@string/preferences_about"
+        android:persistent="true"
+        android:summary="About this application"
+        android:title="About"
+        app:icon="@mipmap/ic_launcher" />
+
+</androidx.preference.PreferenceScreen>

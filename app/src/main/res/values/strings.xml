@@ -1,0 +1,121 @@
+<resources>
+    <string name="SPARQLEndpoint"><![CDATA[
+        https://query.wikidata.org/sparql?format=json&query=
+    ]]></string>
+    <string name="SPARQLEmbed"> https://query.wikidata.org/embed.html?{RAND}##defaultView:{VIEW}%0A
+    </string>
+    <string name="query">
+SELECT ?item ?itemLabel ?itemDescription ?image ?location ?distance  WHERE {
+  SERVICE wikibase:around {
+    ?item wdt:P625 ?location.
+    bd:serviceParam wikibase:center \"[AUTO_COORDINATES]\".
+    bd:serviceParam wikibase:radius \"1\".
+    bd:serviceParam wikibase:distance ?distance.
+  }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en,es,de\". }
+ ?item wdt:P18 ?image.
+}
+</string>
+    <string name="query_country_codes">
+        SELECT ?country ?countryLabel ?code WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". }
+  ?country wdt:P297 ?code.
+}
+ORDER BY  ?countryLabel
+    </string>
+    <string name="query_statistics">
+        #defaultView:BarChart
+
+SELECT (COUNT(?instanceLabel) AS ?count) ?instanceLabel (SAMPLE(?subclassLabel) AS ?label )  WHERE{
+{
+{QUERY}
+  }
+
+}
+
+group by ?instanceLabel
+ORDER BY desc(?count)
+LIMIT 20
+    </string>
+    <!-- key   -->
+    <!-- Notifications settings   -->
+    <string name="preferences_notifications_unique">notifications_unique</string>
+    <string name="preferences_notifications_memory_clear">notifications_memory_clear</string>
+    <string name="preferences_notifications_wikipedia_summary">notifications_wikipedia_summary</string>
+    <string name="preferences_notifications_location_update_interval">notifications_location_update_interval</string>
+    <string name="preferences_notifications_amount_max">notifications_amount_max</string>
+    <string name="preferences_notifications_enable_edit">notifications_enable_edit</string>
+    <string name="preferences_about">About application</string>
+    <string name="preferences_about_text"><![CDATA[
+<h1>Wiki Explorer</h1>
+Find and explore objects that are close to you and described on Wikipedia &amp; Wikidata.
+Enable notifications when objects are close to you.
+<br/><br/>
+Choose from various filters:
+Buildings, parks, public transport stations, metro stations, theatres, museums, monuments, sculptures, free Wi-Fi
+<br/><br/>
+Use the location service of your device and the Wikidata Query Service a public SPARQL endpoint to find objects within a certain radius.
+<br/><br/>
+Wikipedia is an online collaborative multilingual encyclopedia. There are more than 48 Million articles in over 300 languages on Wikipedia. The Wikipedia project is supported by the Wikimedia Foundation and millions of volunteers from all over the world.
+<br/><br/>
+Wikidata is a free and open knowledge base accessible by both machines and humans.
+Wikidata is the central storage for the structured data of all Wikimedia sister projects including Wikipedia, Wikivoyage, Wiktionary, Wikisource, and others.
+<br/><br/>
+Be part of the Wikimedia movement and contribute to Wikipedia and it\'s sister projects like Wikidata.
+<br/><br/>
+Powered by<br/>
+The Wikidata project<br/>
+<a href="https://www.wikidata.org">https://www.wikidata.org</a><br/>
+
+Wikidata Query Service<br/>
+<a href="https://www.query.wikidata.org">https://www.query.wikidata.org</a><br/>
+<br/><br/>
+The Wikipedia project<br/>
+<a href="https://www.wikipedia.org">https://www.wikipedia.org</a><br/>
+<br/><br/>
+Terms of use and privacy<br/>
+Wiki Explorer use API interfaces from Wikimedia sister projects like Wikipedia and Wikidata.
+<br/><br/>
+By using Wiki Explorer you agree to the terms of use and the licenses of Wikipedia, Wikimedia Commons and Wikidata. You also agree to share your personal data like GPS location and IP address with the relevant services of the Wikimedia sister projects like Wikipedia, Wikimedia Commons and Wikidata.
+<br/><br/>
+The license of the Wikipedia content is Attribution 2.0 Generic (CC BY 2.0)
+<a href="https://creativecommons.org/licenses/by/2.0/">https://creativecommons.org/licenses/by/2.0/</a>
+<br/><br/>
+The license of the Wikidata content is CC0 1.0 Universal (CC0 1.0)
+<a href="https://creativecommons.org/publicdomain/zero/1.0/">https://creativecommons.org/publicdomain/zero/1.0/</a>
+<br/><br/>
+The license of the Wikimedia Commons content depends on the individual file.
+<br/><br/>
+Wikimedia terms of use
+<a href="https://foundation.wikimedia.org/wiki/Terms_of_Use/en">https://foundation.wikimedia.org/wiki/Terms_of_Use/en</a>
+<br/><br/>
+About the Wikimedia Foundation
+The Wikimedia Foundation is a charitable nonprofit organization that supports and operates Wikipedia and the other Wiki projects. It is funded mainly through donations. For more information, please visit the website: <a href="https://wikimediafoundation.org/">https://wikimediafoundation.org/</a>
+    ]]></string>
+    <!-- UI   -->
+    <string name="app_name">Wiki Explorer</string>
+    <string name="ui_notification_preferences_title">Notification preferences</string>
+    <string name="ui_main_enable_notifications_label">Notifications</string>
+    <string name="ui_main_enable_notifications_enabled_label">Notifications enabled</string>
+    <string name="ui_main_notification_preferences_button">Notification preferences</string>
+    <string name="ui_notification_preferences_memory_clear">Memory has been cleared</string>
+    <string name="ui_notification_edit_warning_dialog_description"><![CDATA[
+        <h1>Enable Wikidata editing.</h1>
+        If you enable editing you will contribute to Wikidata.<br/>
+        You agree to <a href="https://foundation.wikimedia.org/wiki/Terms_of_Use">the terms of use of Wikidata</a>, and you irrevocably agree to release your contribution under the
+        <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 License</a>.<br/><br/>
+        Your IP address will be publicly visible if you make any edits. Please only enable editing if you know what you are doing!
+    ]]></string>
+    <string name="ui_notification_wikipedia">Wikipedia</string>
+    <string name="ui_notification_wikidata">Wikidata</string>
+    <string name="ui_notification_map">Map</string>
+    <string name="ui_notification_add_image">Add image</string>
+    <string name="ui_notification_add_label_en">Add label (en)</string>
+    <string name="ui_notification_add_description_en">Add description (en)</string>
+    <string name="ui_notification_edit_saved">Wikidata edit saved.\nThank you for contributing!</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+</resources>
